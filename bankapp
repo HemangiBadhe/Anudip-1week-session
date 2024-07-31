@@ -1,0 +1,124 @@
+package Banksystem;
+
+import java.util.Scanner;
+
+public class BankAccount {
+
+    // Customer Class
+    static class Customer {
+        private String name;
+        private String accountNumber;
+
+        public Customer(String name, String accountNumber) {
+            this.name = name;
+            this.accountNumber = accountNumber;
+        }
+
+        public String getAccountNumber() {
+            return accountNumber;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    // Account Class
+    static class Account {
+        private String accountNumber;
+        private double balance;
+        private Customer customer;
+
+        public Account(String accountNumber, Customer customer) {
+            this.accountNumber = accountNumber;
+            this.customer = customer;
+            this.balance = 0.0; // Initial balance is zero
+        }
+
+        public void deposit(double amount) {
+            if (amount > 0) {
+                balance += amount;
+                System.out.println("Deposited $" + amount + ". New balance: $" + balance);
+            } else {
+                System.out.println("Deposit amount must be positive.");
+            }
+        }
+
+        public void withdraw(double amount) {
+            if (amount > 0) {
+                if (amount <= balance) {
+                    balance -= amount;
+                    System.out.println("Withdrew $" + amount + ". New balance: $" + balance);
+                } else {
+                    System.out.println("Insufficient funds.");
+                }
+            } else {
+                System.out.println("Withdrawal amount must be positive.");
+            }
+        }
+
+        public double getBalance() {
+            return balance;
+        }
+
+        public Customer getCustomer() {
+            return customer;
+        }
+    }
+
+    // Main Method
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Create a Customer
+        System.out.print("Enter customer name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter account number: ");
+        String accountNumber = scanner.nextLine();
+        Customer customer = new Customer(name, accountNumber);
+
+        // Create an Account
+        Account account = new Account(accountNumber, customer);
+
+        boolean running = true;
+        while (running) {
+            System.out.println("\n--- Banking System Menu ---");
+            System.out.println("1. Deposit money");
+            System.out.println("2. Withdraw money");
+            System.out.println("3. Check balance");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option (1-4): ");
+
+            int option = scanner.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.print("Enter deposit amount: ");
+                    double depositAmount = scanner.nextDouble();
+                    account.deposit(depositAmount);
+                    break;
+
+                case 2:
+                    System.out.print("Enter withdrawal amount: ");
+                    double withdrawAmount = scanner.nextDouble();
+                    account.withdraw(withdrawAmount);
+                    break;
+
+                case 3:
+                    System.out.println("Account balance: $" + account.getBalance());
+                    break;
+
+                case 4:
+                    running = false;
+                    System.out.println("Exiting the banking system.");
+                    break;
+
+                default:
+                    System.out.println("Invalid option. Please choose a number between 1 and 4.");
+                    break;
+            }
+        }
+
+        scanner.close();
+    }
+}
